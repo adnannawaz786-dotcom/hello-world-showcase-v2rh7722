@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hello World Showcase</title>
+    <meta name="description" content="A simple hello world application showcasing modern UI layout with buttons and cards" />
+    
+    <!-- Preconnect to external resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    
+    <!-- Theme and color scheme -->
+    <meta name="color-scheme" content="dark light" />
+    <meta name="theme-color" content="#0f172a" />
+    
+    <!-- Open Graph meta tags -->
+    <meta property="og:title" content="Hello World Showcase" />
+    <meta property="og:description" content="A simple hello world application showcasing modern UI layout with buttons and cards" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="/" />
+    
+    <!-- Twitter Card meta tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Hello World Showcase" />
+    <meta name="twitter:description" content="A simple hello world application showcasing modern UI layout with buttons and cards" />
+    
+    <!-- Favicon variations -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    
+    <!-- Prevent FOUC (Flash of Unstyled Content) -->
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      html {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        line-height: 1.6;
+        -webkit-text-size-adjust: 100%;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      
+      body {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: #1f2937;
+        overflow-x: hidden;
+      }
+      
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+          color: #f1f5f9;
+        }
+      }
+      
+      #root {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      
+      /* Loading spinner */
+      .loading-spinner {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 40px;
+        height: 40px;
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        border-top-color: #ffffff;
+        animation: spin 1s ease-in-out infinite;
+        z-index: 1000;
+      }
+      
+      @keyframes spin {
+        to {
+          transform: translate(-50%, -50%) rotate(360deg);
+        }
+      }
+      
+      /* Hide loading spinner when app loads */
+      .app-loaded .loading-spinner {
+        display: none;
+      }
+      
+      /* Glassmorphism base styles */
+      .glass {
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 16px;
+      }
+      
+      @media (prefers-color-scheme: dark) {
+        .glass {
+          background: rgba(0, 0, 0, 0.2);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+      }
+      
+      /* Smooth transitions */
+      * {
+        transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+      }
+      
+      /* Custom scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      
+      ::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.1);
+      }
+      
+      ::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 4px;
+      }
+      
+      ::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.5);
+      }
+      
+      /* Focus styles */
+      :focus {
+        outline: 2px solid #3b82f6;
+        outline-offset: 2px;
+      }
+      
+      /* Button base styles */
+      button {
+        cursor: pointer;
+        font-family: inherit;
+      }
+      
+      button:disabled {
+        cursor: not-allowed;
+        opacity: 0.6;
+      }
+      
+      /* Input base styles */
+      input, textarea, select {
+        font-family: inherit;
+      }
+      
+      /* Responsive typography */
+      @media (max-width: 640px) {
+        html {
+          font-size: 14px;
+        }
+      }
+      
+      /* Reduce motion for accessibility */
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Loading spinner -->
+    <div class="loading-spinner"></div>
+    
+    <!-- Main app container -->
+    <div id="root"></div>
+    
+    <!-- Service worker registration -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .then((registration) => {
+              console.log('SW registered: ', registration);
+            })
+            .catch((registrationError) => {
+              console.log('SW registration failed: ', registrationError);
+            });
+        });
+      }
+    </script>
+    
+    <!-- Main application script -->
+    <script type="module" src="/src/main.jsx"></script>
+    
+    <!-- App loaded indicator -->
+    <script>
+      window.addEventListener('load', () => {
+        setTimeout(() => {
+          document.body.classList.add('app-loaded');
+        }, 100);
+      });
+    </script>
+  </body>
+</html>
